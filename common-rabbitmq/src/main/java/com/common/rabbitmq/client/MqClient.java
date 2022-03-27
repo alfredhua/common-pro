@@ -27,9 +27,6 @@ public class MqClient {
             LogUtil.info("Sent '" + message.toString() + "'");
         }catch (Exception e){
             LogUtil.error("send error ",e);
-        }finally {
-            channel.close();
-            connection.close();
         }
     }
 

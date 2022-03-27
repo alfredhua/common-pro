@@ -52,7 +52,14 @@ public class RabbitMqConfig {
                 if (!Optional.ofNullable(model).isPresent()){
                     throw new RuntimeException("model config is error");
                 }
-                MqSupport.getModel(ModelEnum.FANOUT).startModel(channel,abstractMqConsumer);
+                String queueName = MqSupport.getModel(ModelEnum.FANOUT).setModelAndReturnQueue(channel, abstractMqConsumer);
+                channel.basicConsume(queueName, abstractMqConsumer.autoAck(), (consumerTag, delivery) -> {
+                    //处理接收MQ
+                    String message = new String(delivery.getBody(), "UTF-8");
+                    System.out.println("Received :" + message);
+                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                    abstractMqConsumer.consume(message);
+                }, consumerTag -> { });
             }
         }catch (Exception e){
             LogUtil.error("mq start error",e);

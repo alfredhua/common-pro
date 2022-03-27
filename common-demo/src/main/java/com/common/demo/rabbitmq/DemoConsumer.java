@@ -5,7 +5,7 @@ import com.common.util.GsonUtil;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DemoConsumer extends AbstractMqConsumer {
+public class DemoConsumer extends AbstractMqConsumer<Demo> {
 
     @Override
     public String getTopic() {
@@ -13,7 +13,7 @@ public class DemoConsumer extends AbstractMqConsumer {
     }
 
     @Override
-    public String consume(Object o) {
+    public String consume(Demo o) {
         System.out.println(GsonUtil.toJSON(o));
         return "";
     }

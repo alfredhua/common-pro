@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({ RedisCore.class, ZkCore.class, RabbitMqCore.class})
+@Import({ RabbitMqCore.class})
 public class StartApplication {
 
     public static void main(String[] args) {
