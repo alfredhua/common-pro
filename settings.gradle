@@ -1,0 +1,19 @@
+rootProject.name = 'common-spring-boot-start'
+
+include ':common-demo'
+project(':common-demo').projectDir = file('common-demo')
+
+include ':common-redis'
+project(':common-redis').projectDir = file('common-redis')
+
+include ':common-es'
+project(':common-es').projectDir = file('common-es')
+
+include ':common-util'
+project(':common-util').projectDir = file('common-util')
+
+include ':common-rabbitmq'
+project(':common-rabbitmq').projectDir = file('common-rabbitmq')
+
+include ':common-zk'
+project(':common-zk').projectDir = file('common-zk')
