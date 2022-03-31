@@ -1,6 +1,7 @@
-package com.common.es;
+package com.common.es.client;
 
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.Time;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
@@ -18,6 +19,7 @@ import com.common.util.GsonUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,9 +37,14 @@ public class EsClient {
     /**
      * ES 数据源
      */
-    private EsDataSourceInit esDataSource;
+    private static ElasticsearchClient elasticsearchClient;
 
-    public <T extends EEntity> T save(T t) {
+    public static void initEsConfig(ElasticsearchClient client){
+        elasticsearchClient=client;
+    }
+
+
+    public static <T extends EEntity> T save(T t) {
         Document document = t.getClass().getAnnotation(Document.class);
         if (document == null) {
             throw new RuntimeException("这个对象没有 Document 注解");
@@ -51,14 +58,14 @@ public class EsClient {
         }
         try {
             ExistsRequest existsRequest= ExistsRequest.of(b-> b.index(document.indexName()));
-            BooleanResponse exists = esDataSource.getClient().indices().exists(existsRequest);
+            BooleanResponse exists = elasticsearchClient.indices().exists(existsRequest);
             if (!exists.value()){
-                CreateIndexRequest createIndexRequest=CreateIndexRequest.of(b->b.index(indexName).settings(
-                        IndexSettings.of(a-> new IndexSettings.Builder().numberOfReplicas(document.replicas()).numberOfShards(document.shards()))
+                CreateIndexRequest createIndexRequest=CreateIndexRequest.of(b->b.index(indexName)
+                        .settings(IndexSettings.of(a-> new IndexSettings.Builder().numberOfReplicas(document.replicas()).numberOfShards(document.shards()))
                 ));
-                esDataSource.getClient().indices().create(createIndexRequest);
+                elasticsearchClient.indices().create(createIndexRequest);
             }
-            esDataSource.getClient().index(IndexRequest.of(b->b.index(indexName).id(t.unique()).document(t)));
+            elasticsearchClient.index(IndexRequest.of(b->b.index(indexName).id(t.unique()).document(t)));
             return t;
         } catch (IOException e) {
             throw new RuntimeException("es save error",e);
@@ -83,7 +90,7 @@ public class EsClient {
         }
         try {
             DeleteRequest deleteRequest = DeleteRequest.of(b -> b.index(indexName).id(id));
-            esDataSource.getClient().delete(deleteRequest);
+            DeleteResponse delete = elasticsearchClient.delete(deleteRequest);
         }catch (Exception e){
             throw new RuntimeException("delete error ",e);
         }
@@ -104,7 +111,7 @@ public class EsClient {
 
         try {
             GetRequest getRequest = GetRequest.of(b -> b.id(document.indexName()).id(String.valueOf(id)));
-            GetResponse<T> getResponse = esDataSource.getClient().get(getRequest, clazz);
+            GetResponse<T> getResponse = elasticsearchClient.get(getRequest, clazz);
             return getResponse.source();
         } catch (IOException e) {
             throw new RuntimeException("findById error ",e);
@@ -124,9 +131,8 @@ public class EsClient {
             throw new RuntimeException("查询条件不可以为空");
         }
         try {
-
             SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query).sort(sortList));
-            SearchResponse search = esDataSource.getClient().search(searchRequest,clazz);
+            SearchResponse search = elasticsearchClient.search(searchRequest,clazz);
             List<T> result = new ArrayList();
             List hits = search.hits().hits();
             for (Object hit:hits){
@@ -157,7 +163,7 @@ public class EsClient {
         try {
             SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query)
                     .sort(sortOptionsList).from(pageRequest.getOffset()).size(pageRequest.getPage_size()));
-            SearchResponse searchResponse = esDataSource.getClient().search(searchRequest,clazz);
+            SearchResponse searchResponse = elasticsearchClient.search(searchRequest,clazz);
             List<T> result = new ArrayList();
             List hits = searchResponse.hits().hits();
             for (Object hit:hits){
@@ -189,7 +195,7 @@ public class EsClient {
         }
         try {
             SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query));
-            SearchResponse searchResponse = esDataSource.getClient().search(searchRequest,clazz);
+            SearchResponse searchResponse = elasticsearchClient.search(searchRequest,clazz);
             return searchResponse.hits().total().value();
         }catch (Exception e){
             log.error("es countByQuery error",e);
@@ -213,11 +219,11 @@ public class EsClient {
             if (StringUtils.isEmpty(scrollId)){
                 SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query).size(size)
                         .scroll(Time.of(a -> a.time(ES_TIME_OUT_MINUTES))));
-                searchResponse = esDataSource.getClient().search(searchRequest,clazz);
+                searchResponse = elasticsearchClient.search(searchRequest,clazz);
 
             }else {
                 ScrollRequest of = ScrollRequest.of(b -> b.scrollId(scrollId));
-                searchResponse = esDataSource.getClient().scroll(of,clazz);
+                searchResponse = elasticsearchClient.scroll(of,clazz);
             }
             for (Object hit:searchResponse.hits().hits()){
                 result.add(GsonUtil.gson.fromJson(GsonUtil.toJSON(hit),clazz));

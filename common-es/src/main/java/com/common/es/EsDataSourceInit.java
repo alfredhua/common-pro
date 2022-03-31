@@ -35,9 +35,6 @@ public class EsDataSourceInit {
 
     private String password;
 
-    public void init(){
-        getClient();
-    }
 
     public ElasticsearchClient getClient() {
         if (this.client == null) {
