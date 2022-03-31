@@ -18,6 +18,7 @@ import com.common.es.entity.EsScrollResponse;
 import com.common.util.GsonUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -50,10 +51,10 @@ public class EsClient {
             throw new RuntimeException("这个对象没有 Document 注解");
         }
         String indexName = document.indexName();
-        if (indexName == null || indexName.equals("")) {
+        if (StringUtils.isEmpty(indexName)) {
             throw new RuntimeException("没有声明 indexName 索引名");
         }
-        if (t.unique() == null || t.unique().isEmpty()) {
+        if (StringUtils.isEmpty(t.unique())) {
             throw new RuntimeException("唯一主键不能为空");
         }
         try {
