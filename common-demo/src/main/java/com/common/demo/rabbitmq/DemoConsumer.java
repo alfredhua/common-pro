@@ -12,10 +12,12 @@ public class DemoConsumer extends AbstractMqConsumer<Demo> {
         return "demo";
     }
 
+
     @Override
     public String consume(Demo o) {
         System.out.println(GsonUtil.toJSON(o));
         return "";
     }
+
 
 }

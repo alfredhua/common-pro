@@ -3,12 +3,14 @@ package com.common.rabbitmq.config;
 import com.common.rabbitmq.constants.ModelEnum;
 import com.common.rabbitmq.consumer.AbstractMqConsumer;
 import com.common.util.EnvUtil;
+import com.common.util.GsonUtil;
 import com.common.util.LogUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.util.SerializationUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +34,7 @@ public class RabbitMqConfig {
         factory.setVirtualHost(environment.getProperty("mq.config.virtualHost"));
         factory.setHost(environment.getProperty("mq.config.host"));
         factory.setPort(Integer.parseInt(Objects.requireNonNull(environment.getProperty("mq.config.port"))));
+
         this.start();
     }
 
@@ -55,9 +58,9 @@ public class RabbitMqConfig {
                 String queueName = MqSupport.getModel(ModelEnum.FANOUT).setModelAndReturnQueue(channel, abstractMqConsumer);
                 channel.basicConsume(queueName, abstractMqConsumer.autoAck(), (consumerTag, delivery) -> {
                     //处理接收MQ
-                    String message = new String(delivery.getBody(), "UTF-8");
+                    Object message = SerializationUtils.deserialize(delivery.getBody());
                     System.out.println("Received :" + message);
-                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+//                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), true);
                     abstractMqConsumer.consume(message);
                 }, consumerTag -> { });
             }
