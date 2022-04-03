@@ -1,6 +1,7 @@
 package com.common.util;
 
-import com.common.domain.response.PageBean;
+
+import com.common.api.entity.response.PageBean;
 
 /**
  * @author hua

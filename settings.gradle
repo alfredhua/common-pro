@@ -3,6 +3,10 @@ rootProject.name = 'common-spring-boot-start'
 include ':common-demo'
 project(':common-demo').projectDir = file('common-demo')
 
+
+include ':common-api'
+project(':common-api').projectDir = file('common-api')
+
 include ':common-redis'
 project(':common-redis').projectDir = file('common-redis')
 

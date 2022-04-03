@@ -1,4 +1,4 @@
-package com.common.domain.request;
+package com.common.api.entity.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +21,7 @@ public class PageRequest implements java.io.Serializable {
         }
         return page_num;
     }
+
 
     public Integer getOffset(){
         if(page_num==null||page_num<1){

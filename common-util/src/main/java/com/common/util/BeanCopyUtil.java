@@ -1,6 +1,6 @@
 package com.common.util;
 
-import com.common.domain.response.PageBean;
+import com.common.api.entity.response.PageBean;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
