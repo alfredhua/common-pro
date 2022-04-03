@@ -44,6 +44,13 @@ public class EsClient {
         elasticsearchClient=client;
     }
 
+    private static ElasticsearchClient getClient(){
+        if (ObjectUtils.isEmpty(elasticsearchClient)){
+
+        }
+        return elasticsearchClient;
+    }
+
 
     public static <T extends EEntity> T save(T t) {
         Document document = t.getClass().getAnnotation(Document.class);
@@ -59,14 +66,14 @@ public class EsClient {
         }
         try {
             ExistsRequest existsRequest= ExistsRequest.of(b-> b.index(document.indexName()));
-            BooleanResponse exists = elasticsearchClient.indices().exists(existsRequest);
+            BooleanResponse exists = getClient().indices().exists(existsRequest);
             if (!exists.value()){
                 CreateIndexRequest createIndexRequest=CreateIndexRequest.of(b->b.index(indexName)
                         .settings(IndexSettings.of(a-> new IndexSettings.Builder().numberOfReplicas(document.replicas()).numberOfShards(document.shards()))
                 ));
-                elasticsearchClient.indices().create(createIndexRequest);
+                getClient().indices().create(createIndexRequest);
             }
-            elasticsearchClient.index(IndexRequest.of(b->b.index(indexName).id(t.unique()).document(t)));
+            getClient().index(IndexRequest.of(b->b.index(indexName).id(t.unique()).document(t)));
             return t;
         } catch (IOException e) {
             throw new RuntimeException("es save error",e);
@@ -91,7 +98,7 @@ public class EsClient {
         }
         try {
             DeleteRequest deleteRequest = DeleteRequest.of(b -> b.index(indexName).id(id));
-            DeleteResponse delete = elasticsearchClient.delete(deleteRequest);
+            DeleteResponse delete = getClient().delete(deleteRequest);
         }catch (Exception e){
             throw new RuntimeException("delete error ",e);
         }
@@ -112,7 +119,7 @@ public class EsClient {
 
         try {
             GetRequest getRequest = GetRequest.of(b -> b.id(document.indexName()).id(String.valueOf(id)));
-            GetResponse<T> getResponse = elasticsearchClient.get(getRequest, clazz);
+            GetResponse<T> getResponse = getClient().get(getRequest, clazz);
             return getResponse.source();
         } catch (IOException e) {
             throw new RuntimeException("findById error ",e);
@@ -133,7 +140,7 @@ public class EsClient {
         }
         try {
             SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query).sort(sortList));
-            SearchResponse search = elasticsearchClient.search(searchRequest,clazz);
+            SearchResponse search = getClient().search(searchRequest,clazz);
             List<T> result = new ArrayList();
             List hits = search.hits().hits();
             for (Object hit:hits){
@@ -164,7 +171,7 @@ public class EsClient {
         try {
             SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query)
                     .sort(sortOptionsList).from(pageRequest.getOffset()).size(pageRequest.getPage_size()));
-            SearchResponse searchResponse = elasticsearchClient.search(searchRequest,clazz);
+            SearchResponse searchResponse = getClient().search(searchRequest,clazz);
             List<T> result = new ArrayList();
             List hits = searchResponse.hits().hits();
             for (Object hit:hits){
@@ -196,7 +203,7 @@ public class EsClient {
         }
         try {
             SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query));
-            SearchResponse searchResponse = elasticsearchClient.search(searchRequest,clazz);
+            SearchResponse searchResponse = getClient().search(searchRequest,clazz);
             return searchResponse.hits().total().value();
         }catch (Exception e){
             log.error("es countByQuery error",e);
@@ -220,11 +227,11 @@ public class EsClient {
             if (StringUtils.isEmpty(scrollId)){
                 SearchRequest searchRequest = SearchRequest.of(b -> b.index(document.indexName()).query(query).size(size)
                         .scroll(Time.of(a -> a.time(ES_TIME_OUT_MINUTES))));
-                searchResponse = elasticsearchClient.search(searchRequest,clazz);
+                searchResponse = getClient().search(searchRequest,clazz);
 
             }else {
                 ScrollRequest of = ScrollRequest.of(b -> b.scrollId(scrollId));
-                searchResponse = elasticsearchClient.scroll(of,clazz);
+                searchResponse = getClient().scroll(of,clazz);
             }
             for (Object hit:searchResponse.hits().hits()){
                 result.add(GsonUtil.gson.fromJson(GsonUtil.toJSON(hit),clazz));
