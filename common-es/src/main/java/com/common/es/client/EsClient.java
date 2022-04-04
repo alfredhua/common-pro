@@ -10,7 +10,7 @@ import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
 import co.elastic.clients.elasticsearch.indices.ExistsRequest;
 import co.elastic.clients.elasticsearch.indices.IndexSettings;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
-import com.common.domain.request.PageRequest;
+import com.common.api.entity.request.PageRequest;
 import com.common.es.anno.Document;
 import com.common.es.entity.EEntity;
 import com.common.es.entity.EsPageResponse;

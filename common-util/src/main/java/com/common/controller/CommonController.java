@@ -1,7 +1,7 @@
 package com.common.controller;
 
-import com.common.domain.constants.SysErrorCodeEnum;
-import com.common.domain.response.ResultResponse;
+import com.common.api.constants.SysErrorCodeEnum;
+import com.common.api.entity.response.ResultResponse;
 import com.common.util.GsonUtil;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

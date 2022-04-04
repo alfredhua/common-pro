@@ -7,6 +7,9 @@ project(':common-demo').projectDir = file('common-demo')
 include ':common-api'
 project(':common-api').projectDir = file('common-api')
 
+include ':common-mybatis'
+project(':common-mybatis').projectDir = file('common-mybatis')
+
 include ':common-redis'
 project(':common-redis').projectDir = file('common-redis')
 
