@@ -15,7 +15,8 @@ dependencies {
 
     api project(':common-util')
     api("org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisSpringBootStarterVersion")
-    api("mysql:mysql-connector-java:6.0.6")
+    api("org.mybatis:mybatis-typehandlers-jsr310:1.0.1")
+    api("mysql:mysql-connector-java:8.0.15")
 }
 
 publishing {

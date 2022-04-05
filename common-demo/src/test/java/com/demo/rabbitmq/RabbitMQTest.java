@@ -14,7 +14,7 @@ public class RabbitMQTest extends TestBase {
     public void test(){
         try {
             Demo demo=new Demo();
-            demo.setId("aaa");
+            demo.setId(1L);
             MqClient.send("demo",demo);
         } catch (IOException e) {
             e.printStackTrace();

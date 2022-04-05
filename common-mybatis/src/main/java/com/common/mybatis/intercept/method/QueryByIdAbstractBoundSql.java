@@ -6,17 +6,19 @@ import com.common.mybatis.util.MapperUtils;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.mapping.ParameterMapping;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QueryByIdAbstractBoundSql extends AbstractBoundSql{
 
     @Override
-    public SqlParamInfo getSqlParamInfo(String mapperClassName, Object[] args) { if (args.length>1) {
+    public SqlParamInfo getSqlParamInfo(String mapperClassName, Object[] args) {
+        if (args.length>1) {
             TableInfo tableInfo = MapperUtils.getTableInfo(mapperClassName);
-            String s = new SQL().FROM(tableInfo.getTableName()) .SELECT(getQueryColumns(tableInfo)).WHERE("id=?").toString();
-            List<ParameterMapping> parameterMappingList=new ArrayList<>();
-            parameterMappingList.add(new ParameterMapping.Builder(getConfiguration(args),"id",Long.class).build());
+            List<ParameterMapping> parameterMappingList = tableInfo.getFieldInfoList().stream().filter(item-> "id".equals(item.getColumnName()))
+                    .map(item -> new ParameterMapping.Builder(getConfiguration(args), item.getFiledName(), item.getClazz()).build())
+                    .collect(Collectors.toList());
+            String s = new SQL().FROM(tableInfo.getTableName()).SELECT(getQueryColumns(tableInfo)).WHERE("id=?").toString();
             return new SqlParamInfo(s,parameterMappingList);
         }
         throw new RuntimeException("queryById error");

@@ -23,7 +23,7 @@ public class UpdateByIdAbstractBoundSql extends AbstractBoundSql {
             String sql=new SQL(){{
                 UPDATE(tableInfo.getTableName());
                 tableInfo.getFieldInfoList().forEach(fieldInfo->{
-                    if (ObjectUtils.isEmpty(map.get(fieldInfo.getFiledName())) && !"id".equals(fieldInfo.getColumnName())){
+                    if (!ObjectUtils.isEmpty(map.get(fieldInfo.getFiledName())) && !"id".equals(fieldInfo.getColumnName())){
                         SET(fieldInfo.getColumnName() + "= ?");
                         parameterMappings.add(new ParameterMapping.Builder(getConfiguration(args),fieldInfo.getFiledName(),fieldInfo.getClazz()).build());
                     }

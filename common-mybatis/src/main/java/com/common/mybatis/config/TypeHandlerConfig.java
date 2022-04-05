@@ -17,10 +17,10 @@ public class TypeHandlerConfig implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
-        TypeHandlerRegistry typeHandlerRegistry = sqlSessionFactory.getConfiguration().getTypeHandlerRegistry();
-        typeHandlerRegistry.register(LocalDateTime.class, LocalDateTimeTypeHandler.class);
-        typeHandlerRegistry.register(LocalDate.class, LocalDateTypeHandler.class);
+//        SqlSessionFactory sqlSessionFactory = applicationContext.getBean(SqlSessionFactory.class);
+//        TypeHandlerRegistry typeHandlerRegistry = sqlSessionFactory.getConfiguration().getTypeHandlerRegistry();
+//        typeHandlerRegistry.register(LocalDateTime.class, LocalDateTimeTypeHandler.class);
+//        typeHandlerRegistry.register(LocalDate.class, LocalDateTypeHandler.class);
     }
 
 }

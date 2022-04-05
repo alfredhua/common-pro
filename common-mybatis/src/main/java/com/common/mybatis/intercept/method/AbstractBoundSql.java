@@ -8,11 +8,26 @@ import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.type.JdbcType;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.StringJoiner;
 
 public abstract class AbstractBoundSql {
+
+    public static Map<Class<?>, JdbcType> jdbcTypeMap=new HashMap<>(16);
+
+    static {
+        jdbcTypeMap.put(Long.class,JdbcType.BIGINT);
+        jdbcTypeMap.put(Integer.class,JdbcType.INTEGER);
+        jdbcTypeMap.put(String.class,JdbcType.VARCHAR);
+        jdbcTypeMap.put(LocalDateTime.class,JdbcType.TIME);
+        jdbcTypeMap.put(LocalDate.class,JdbcType.DATE);
+    }
 
     public Configuration getConfiguration(Object[] args){
           MappedStatement mappedStatement = (MappedStatement) args[0];
@@ -55,7 +70,7 @@ public abstract class AbstractBoundSql {
      public String getQueryColumns(TableInfo tableInfo){
          StringJoiner stringJoiner=new StringJoiner(",");
          tableInfo.getFieldInfoList().forEach(fieldInfo -> {
-             stringJoiner.add(fieldInfo.getColumnName());
+             stringJoiner.add(fieldInfo.getColumnName() + " as "+ fieldInfo.getFiledName());
          });
          return stringJoiner.toString();
      }
