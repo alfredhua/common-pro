@@ -1,5 +1,6 @@
 package com.common.mybatis;
 
+import com.common.mybatis.entity.EntityWrapper;
 import org.apache.ibatis.annotations.*;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,13 @@ public interface BaseMapper<T> {
     @Select("")
     T queryById(Long id);
 
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @Delete("")
+    boolean deleteById(Long id);
 
     /**
      * 批量查询
@@ -39,14 +47,6 @@ public interface BaseMapper<T> {
     @Select("")
     List<T> listByIds(@Param("ids") Set<Long> ids);
 
-
-    /**
-     * 删除
-     * @param id
-     * @return
-     */
-    @Delete("")
-    boolean deleteById(Long id);
 
     /**
      * 批量删除
@@ -60,15 +60,14 @@ public interface BaseMapper<T> {
      * 分页查询
      * @return
      */
-//    @Select("")
-//    List<T> listByPage(@Param("page") int page,@Param("pageSize") int pageSize,@Param("entityWrapper") EntityWrapper entityWrapper);
+    @Select("")
+    List<T> listByPage(@Param("page") int page,@Param("pageSize") int pageSize,@Param("entityWrapper") EntityWrapper entityWrapper);
 
     /**
      * 查询
      * @return
      */
-//    @Select("")
-//    List<T> listAll(@Param("entityWrapper") EntityWrapper entityWrapper);
-
+    @Select("")
+    List<T> listAll(@Param("entityWrapper") EntityWrapper entityWrapper);
 
 }

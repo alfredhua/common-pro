@@ -2,12 +2,15 @@ package com.demo.mybtatis;
 
 import com.common.demo.dao.DemoMapper;
 import com.common.demo.rabbitmq.Demo;
+import com.common.mybatis.entity.EntityWrapper;
+import com.common.mybatis.enums.ConditionEnum;
 import com.common.util.IDGenerateUtil;
 import com.demo.TestBase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,6 +79,37 @@ public class MybatisTest extends TestBase {
         ids.add(1473168560619552L);
         ids.add(1473133481558048L);
         List<Demo> list=demoMapper.listByIds(ids);
+        System.out.println(list);
+    }
+
+
+    @Test
+    public void deleteByIds(){
+        Set<Long> ids=new HashSet<>();
+        ids.add(1473168560619552L);
+        ids.add(1473133481558048L);
+        boolean b = demoMapper.deleteByIds(ids);
+        System.out.println(b);
+    }
+
+    @Test
+    public void listAll(){
+        EntityWrapper entityWrapper=new EntityWrapper();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        entityWrapper.addCondition("create_time", ConditionEnum.ge,LocalDateTime.parse("2022-04-05 16:41:07",df));
+        entityWrapper.addCondition("name",ConditionEnum.eq,"aaaa");
+        List<Demo> list = demoMapper.listAll(entityWrapper);
+        System.out.println(list);
+    }
+
+
+     @Test
+    public void listByPage(){
+        EntityWrapper entityWrapper=new EntityWrapper();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        entityWrapper.addCondition("create_time", ConditionEnum.ge,LocalDateTime.parse("2022-04-05 16:41:07",df));
+        entityWrapper.addCondition("name",ConditionEnum.eq,"aaaa");
+        List<Demo> list = demoMapper.listByPage(2,2,entityWrapper);
         System.out.println(list);
     }
 }
