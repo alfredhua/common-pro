@@ -1,6 +1,6 @@
 plugins {
-    id "java-library"
-    id 'maven-publish'
+//    id "java-library"
+    id 'org.springframework.boot'
 }
 
 group 'com.common.demo'
@@ -27,14 +27,9 @@ dependencies {
 
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.common.demo'
-            artifactId = 'common-demo'
-            version = '1.0.0'
-            from components.java
-        }
+jar {
+    manifest {
+        attributes('Main-Class': 'com.common.demo.StartApplication')
     }
 }
 

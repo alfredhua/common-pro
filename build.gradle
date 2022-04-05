@@ -1,5 +1,7 @@
 plugins {
     id "java-library"
+    id 'org.springframework.boot' version '2.4.1'
+
 }
 
 allprojects {
@@ -28,4 +30,3 @@ subprojects{
     }
 
 }
-
