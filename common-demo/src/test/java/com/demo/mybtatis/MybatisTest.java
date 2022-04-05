@@ -8,6 +8,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MybatisTest extends TestBase {
 
@@ -19,8 +22,8 @@ public class MybatisTest extends TestBase {
         Demo demo = new Demo();
         demo.setId(IDGenerateUtil.generateId());
         demo.setName("aaaa");
-//        demo.setUpdateTime(LocalDateTime.now());
-//        demo.setCreateTime(LocalDateTime.now());
+        demo.setUpdateTime(LocalDateTime.now());
+        demo.setCreateTime(LocalDateTime.now());
         demoMapper.insert(demo);
     }
 
@@ -29,8 +32,8 @@ public class MybatisTest extends TestBase {
         Demo demo = new Demo();
         demo.setId(1473039862595616L);
         demo.setName("aaaa");
-//        demo.setUpdateTime(LocalDateTime.now());
-//        demo.setCreateTime(LocalDateTime.now());
+        demo.setUpdateTime(LocalDateTime.now());
+        demo.setCreateTime(LocalDateTime.now());
         demo.setModifier("demo");
         boolean b = demoMapper.updateById(demo);
         System.out.println(b);
@@ -39,8 +42,8 @@ public class MybatisTest extends TestBase {
     @Test
     public void  updateTwo() {
         Demo demo = new Demo();
-        demo.setId(1473039862595616L);
-//        demo.setUpdateTime(LocalDateTime.now());
+        demo.setId(1473133481558048L);
+        demo.setUpdateTime(LocalDateTime.now());
         demo.setModifier("demo");
         boolean b = demoMapper.updateById(demo);
         System.out.println(b);
@@ -49,7 +52,7 @@ public class MybatisTest extends TestBase {
     @Test
     public void  updateById() {
         Demo demo = new Demo();
-//        demo.setUpdateTime(LocalDateTime.now());
+        demo.setUpdateTime(LocalDateTime.now());
         demo.setModifier("dessssmo");
         boolean b = demoMapper.updateById(demo);
         System.out.println(b);
@@ -65,5 +68,14 @@ public class MybatisTest extends TestBase {
     public void query(){
         Demo demo = demoMapper.queryById(1473133481558048L);
         System.out.println(demo.toString());
+    }
+
+    @Test
+    public void listByQueryId(){
+        Set<Long> ids=new HashSet<>();
+        ids.add(1473168560619552L);
+        ids.add(1473133481558048L);
+        List<Demo> list=demoMapper.listByIds(ids);
+        System.out.println(list);
     }
 }

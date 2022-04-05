@@ -75,7 +75,6 @@ public abstract class AbstractBoundSql {
          return stringJoiner.toString();
      }
 
-
      public String getIds(Object arg){
           if (arg instanceof MapperMethod.ParamMap){
                MapperMethod.ParamMap map = (MapperMethod.ParamMap) arg;
