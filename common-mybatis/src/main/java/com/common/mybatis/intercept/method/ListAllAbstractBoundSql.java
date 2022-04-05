@@ -1,16 +1,15 @@
 package com.common.mybatis.intercept.method;
 
-import com.common.mybatis.entity.*;
-import com.common.mybatis.enums.ConditionEnum;
+import com.common.mybatis.entity.EntityWrapper;
+import com.common.mybatis.entity.SqlParamInfo;
 import com.common.mybatis.util.EntityWrapperUtils;
-import com.common.mybatis.util.MapperUtils;
+import com.common.mybatis.util.MapperEntityInfoUtils;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.mapping.ParameterMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ListAllAbstractBoundSql extends AbstractBoundSql{
 
@@ -20,28 +19,9 @@ public class ListAllAbstractBoundSql extends AbstractBoundSql{
         if (object instanceof MapperMethod.ParamMap){
             MapperMethod.ParamMap<Object> map=(MapperMethod.ParamMap) object;
             EntityWrapper entityWrapper =(EntityWrapper) map.get("entityWrapper");
-            TableInfo tableInfo = MapperUtils.getTableInfo(mapperClassName);
-            SQL sql=new SQL().SELECT(getQueryColumns(tableInfo)) .FROM(tableInfo.getTableName());
-
-            List<ParameterMapping> list=new ArrayList<>();
-            //条件拼接
-            List<Condition> collect = entityWrapper.getList().stream().filter(item -> !item.getCondition().equals(ConditionEnum.orderBy)).collect(Collectors.toList());
-            collect.forEach(item->{
-                EntityWrapperUtils.getWhereSql(item,sql);
-                FieldInfo fieldInfo = tableInfo.getByColumnName(item.getColumn());
-                map.put(item.getColumn(),item.getValue());
-                list.add(new ParameterMapping.Builder(getConfiguration(args), fieldInfo.getColumnName(), fieldInfo.getClazz()).build());
-            });
-            // 排序
-            List<Condition> orderConditionList = entityWrapper.getList().stream().filter(item -> item.getCondition().equals(ConditionEnum.orderBy)).collect(Collectors.toList());
-            if (orderConditionList.isEmpty()){
-                orderConditionList.add(new Condition("create_time", ConditionEnum.orderBy, "DESC"));
-            }
-            orderConditionList.forEach(item->{
-                sql.ORDER_BY(item.getColumn()+" "+ item.getValue());
-            });
-
-            args[1]=map;
+            List<ParameterMapping> list = new ArrayList<>();
+            SQL sql = MapperEntityInfoUtils.getSelectSql(mapperClassName);
+            EntityWrapperUtils.splicingConditionSql(sql,mapperClassName,entityWrapper,list,args);
             return new SqlParamInfo(sql.toString(),list);
         }
         throw new RuntimeException();

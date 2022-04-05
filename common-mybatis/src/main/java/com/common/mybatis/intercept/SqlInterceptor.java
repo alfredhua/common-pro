@@ -1,15 +1,12 @@
 package com.common.mybatis.intercept;
 
 import com.common.mybatis.intercept.method.*;
-import com.common.mybatis.util.MapperUtils;
 import org.apache.ibatis.binding.MapperRegistry;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
-
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;

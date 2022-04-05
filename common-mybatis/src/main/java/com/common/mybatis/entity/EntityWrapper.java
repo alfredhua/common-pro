@@ -16,7 +16,7 @@ public class EntityWrapper {
         list=new ArrayList<>();
     }
 
-    public EntityWrapper addCondition(String column, ConditionEnum condition, Object value){
+    public EntityWrapper addCondition(String column, ConditionEnum condition,Object value){
         list.add(new Condition(column,condition,value));
         return this;
     }

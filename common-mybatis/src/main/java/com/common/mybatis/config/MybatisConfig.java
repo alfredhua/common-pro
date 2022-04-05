@@ -5,12 +5,11 @@ import com.common.mybatis.annotation.Column;
 import com.common.mybatis.annotation.Table;
 import com.common.mybatis.entity.FieldInfo;
 import com.common.mybatis.entity.TableInfo;
-import com.common.mybatis.util.MapperUtils;
+import com.common.mybatis.util.MapperEntityInfoUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -28,12 +27,11 @@ public class MybatisConfig {
         if (ObjectUtils.isEmpty(baseMapperList)){
             return;
         }
-        baseMapperList.forEach(this::initMapperUtil);
-
-
+        baseMapperList.forEach(this::initMapperEntityInfoUtils);
     }
 
-    private void initMapperUtil(BaseMapper<?> baseMapper){
+
+    private void initMapperEntityInfoUtils(BaseMapper<?> baseMapper){
         try {
             Class<?>[] interfaces = baseMapper.getClass().getInterfaces();
             Class<?> mapperClass = interfaces[0];
@@ -41,7 +39,7 @@ public class MybatisConfig {
             Type[] genericInterfaces = mapperClass.getGenericInterfaces();
             ParameterizedType type = (ParameterizedType) genericInterfaces[0];
             Class<?> entityClass = Class.forName(type.getActualTypeArguments()[0].getTypeName());
-            MapperUtils.putTableInfo(mapperClassName,getTableInfo(entityClass));
+            MapperEntityInfoUtils.putTableInfo(mapperClassName,getTableInfo(entityClass));
         }catch (Exception e){
             e.printStackTrace();
         }
