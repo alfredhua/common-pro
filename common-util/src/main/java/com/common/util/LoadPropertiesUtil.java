@@ -62,7 +62,7 @@ public class LoadPropertiesUtil {
     private static Properties loadByYmlURL(URL url){
         try {
             Yaml yaml = new Yaml();
-            HashMap<String,String> hashMap = yaml.loadAs(new FileReader(url.getPath()), HashMap.class);
+            HashMap<?,?> hashMap = yaml.loadAs(new FileReader(url.getPath()), HashMap.class);
             return new Properties();
         }catch (Exception e){
             throw new RuntimeException("load yml file error",e);
