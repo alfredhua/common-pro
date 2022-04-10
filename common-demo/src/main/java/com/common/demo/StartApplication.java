@@ -1,5 +1,6 @@
 package com.common.demo;
 
+import com.common.es.EsCore;
 import com.common.mybatis.MybatisCore;
 import com.common.rabbitmq.RabbitMqCore;
 import com.common.redis.RedisCore;
@@ -9,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({ MybatisCore.class})
+@Import({ MybatisCore.class,RabbitMqCore.class,RedisCore.class,ZkCore.class, EsCore.class})
 public class StartApplication {
 
     public static void main(String[] args) {
