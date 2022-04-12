@@ -1,4 +1,4 @@
-rootProject.name = 'common-spring-boot-start'
+rootProject.name = 'common-pro'
 
 include ':common-demo'
 project(':common-demo').projectDir = file('common-demo')
