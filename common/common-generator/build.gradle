@@ -3,26 +3,26 @@ plugins {
     id 'maven-publish'
 }
 
-group 'com.common.mybatis'
+group 'com.common.es'
 version '1.0.0'
 sourceCompatibility = 1.8
 
 ext{
-    mybatisSpringBootStarterVersion= '2.2.2'
+    esVersion= '8.1.0'
 }
 
 dependencies {
+
+    compile group: 'org.apache.velocity', name: 'velocity', version: '1.7'
     api project(':common-util')
-    api("org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisSpringBootStarterVersion")
-    api("org.mybatis:mybatis-typehandlers-jsr310:1.0.1")
-    api("mysql:mysql-connector-java:8.0.15")
+
 }
 
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = 'com.common.mybatis'
-            artifactId = 'common-mybatis'
+            groupId = 'com.common.es'
+            artifactId = 'common-es'
             version = '1.0.0'
             from components.java
         }

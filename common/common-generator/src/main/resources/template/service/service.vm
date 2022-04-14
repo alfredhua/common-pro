@@ -1,0 +1,10 @@
+package ${packageName}.dao;
+
+
+/**
+ * @auth guozhenhua
+ * @date ${ctime}
+ */
+public interface ${entityName}Mapper extends BaseMapper<${entityName}> {
+
+}

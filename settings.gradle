@@ -24,3 +24,6 @@ project(':common-rabbitmq').projectDir = file('common/common-rabbitmq')
 
 include ':common-zk'
 project(':common-zk').projectDir = file('common/common-zk')
+
+include ':common-generator'
+project(':common-generator').projectDir = file('common/common-generator')
