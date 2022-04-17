@@ -3,7 +3,7 @@ rootProject.name = 'common-pro'
 include ':common-demo'
 project(':common-demo').projectDir = file('common-demo')
 
-
+// common
 include ':common-api'
 project(':common-api').projectDir = file('common/common-api')
 
@@ -27,3 +27,12 @@ project(':common-zk').projectDir = file('common/common-zk')
 
 include ':common-generator'
 project(':common-generator').projectDir = file('common/common-generator')
+
+//  web start
+include ':web-start'
+project(':web-start').projectDir = file('web-start')
+
+// server
+
+include ':server-develop'
+project(':server-develop').projectDir = file('server/server-develop')

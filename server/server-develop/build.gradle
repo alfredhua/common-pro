@@ -1,0 +1,14 @@
+plugins {
+    id "java-library"
+}
+
+group project.name
+version "$projectVersion"
+
+dependencies {
+    api project(':common-redis')
+    api project(':common-zk')
+    api project(':common-rabbitmq')
+    api project(':common-mybatis')
+    api project(':common-es')
+}

@@ -17,6 +17,10 @@ public class ZkClient {
         curatorFramework=curator;
     }
 
+    public static CuratorFramework getCuratorFramework(){
+        return curatorFramework;
+    }
+
     public static boolean exist(String path){
         try {
             Stat stat = curatorFramework.checkExists().forPath(path);

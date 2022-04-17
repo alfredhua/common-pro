@@ -1,0 +1,32 @@
+plugins {
+//    id "java-library"
+    id 'org.springframework.boot'
+}
+
+group 'com.web'
+version '1.0.0'
+sourceCompatibility = 1.8
+
+ext{
+    springBootVersion = '2.6.5'
+    junitVersion= '4.13.2'
+}
+
+dependencies {
+    testCompile ("junit:junit:$junitVersion")
+    compile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'com.web.StartApplication')
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+repositories {
+    mavenCentral()
+}
