@@ -70,4 +70,11 @@ public interface BaseMapper<T> {
     @Select("")
     List<T> listAll(@Param("entityWrapper") EntityWrapper entityWrapper);
 
+    /**
+     * 查询个数
+     * @param entityWrapper
+     * @return
+     */
+    @Select("")
+    int listCount(@Param("entityWrapper") EntityWrapper entityWrapper);
 }

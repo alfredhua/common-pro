@@ -1,9 +1,11 @@
-package ${packageName}.service;
+package ${packageName}.service.impl;
 
-import ${packageName}.dto.${entityName}ListReqDTO;
-import ${packageName}.dto.entity.${entityName};
-import ${packageName}.dao.${entityName}Mapper;
-import com.common.domain.response.PageBean;
+import ${packageName}.entity.${entityName};
+import ${packageName}.mapper.${entityName}Mapper;
+import ${packageName}.service.${entityName}Service;
+import com.common.mybatis.entity.EntityWrapper;
+import com.common.api.entity.request.PageRequest;
+import com.common.api.entity.response.PageBean;
 import com.common.util.IDGenerateUtil;
 import com.common.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
  * @date ${date}
  */
 @Component
-public class ${entityName}Service {
+public class ${entityName}ServiceImpl implements ${entityName}Service {
 
     @Autowired
     ${entityName}Mapper ${firstLowerEntityName}Mapper;
@@ -23,27 +25,28 @@ public class ${entityName}Service {
     public void create${entityName}(${entityName} ${firstLowerEntityName}) {
         ${firstLowerEntityName}.setId(IDGenerateUtil.generateId());
         ${firstLowerEntityName}.setCreate_time(LocalDateTime.now());
-        ${firstLowerEntityName}Mapper.create${entityName}(${firstLowerEntityName});
+        ${firstLowerEntityName}Mapper.insert(${firstLowerEntityName});
     }
 
-     public ${entityName} getById(long id) {
-         return ${firstLowerEntityName}Mapper.getById(id);
+     public ${entityName} queryById(long id) {
+         return ${firstLowerEntityName}Mapper.queryById(id);
      }
 
     public boolean update${entityName}(${entityName} ${firstLowerEntityName}) {
-        return ${firstLowerEntityName}Mapper.update${entityName}(${firstLowerEntityName});
+        return ${firstLowerEntityName}Mapper.updateById(${firstLowerEntityName});
 
     }
 
     public boolean del${entityName}(long id) {
-        return ${firstLowerEntityName}Mapper.del${entityName}(id);
+        return ${firstLowerEntityName}Mapper.deleteById(id);
     }
 
-    public PageBean<${entityName}> list${entityName}ByPage(${entityName}ListReqDTO ${firstLowerEntityName}ListReqDTO) {
-        PageBean<${entityName}> pageBean = PageUtil.validatePage(${firstLowerEntityName}ListReqDTO.getPage_num(),
-                ${firstLowerEntityName}ListReqDTO.getPage_size(),${firstLowerEntityName}ListReqDTO.getOffset());
-        pageBean.setList(${firstLowerEntityName}Mapper.list${entityName}ByPage(${firstLowerEntityName}ListReqDTO));
-        pageBean.setTotal(${firstLowerEntityName}Mapper.list${entityName}Count(${firstLowerEntityName}ListReqDTO));
+    public PageBean<${entityName}> list${entityName}ByPage(${entityName} ${firstLowerEntityName},PageRequest pageRequest) {
+        PageBean<${entityName}> pageBean = PageUtil.validatePage(pageRequest.getPage_num(),
+                pageRequest.getPage_size(),pageRequest.getOffset());
+        EntityWrapper entityWrapper=new EntityWrapper();
+        pageBean.setList(${firstLowerEntityName}Mapper.listByPage(pageRequest.getPage_num(),pageRequest.getPage_size(),entityWrapper));
+        pageBean.setTotal(${firstLowerEntityName}Mapper.listCount(entityWrapper));
         return pageBean;
     }
 }

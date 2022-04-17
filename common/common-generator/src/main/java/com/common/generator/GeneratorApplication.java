@@ -1,10 +1,7 @@
 package com.common.generator;
 
 import com.common.generator.entity.JDBCEntity;
-import com.common.generator.template.EntityServiceImpl;
-import com.common.generator.template.GeneratorService;
-import com.common.generator.template.InterfaceServiceImpl;
-import com.common.generator.template.MapperServiceImpl;
+import com.common.generator.template.*;
 import com.common.generator.util.QueryUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,7 @@ public  class GeneratorApplication {
 
     static {
         list.add(new InterfaceServiceImpl());
+        list.add(new InterfaceImplServiceImpl());
         list.add(new MapperServiceImpl());
         list.add(new EntityServiceImpl());
     }

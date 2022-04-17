@@ -17,7 +17,7 @@ public class ${entityName}  implements Serializable {
    #if("varchar"==$columnEntity.type)
     #if("" != $columnEntity.comment)
 
-  /**
+   /**
    * $columnEntity.comment
    */
    #end
@@ -48,13 +48,16 @@ private LocalDate $columnEntity.tableColumnName;
 private String $columnEntity.tableColumnName;
     #elseif("int"==$columnEntity.type)
        #if("" != $columnEntity.comment)
+
     /**
      * $columnEntity.comment
      */
     #end
 private Integer $columnEntity.tableColumnName;
   #elseif("bigint"==$columnEntity.type)
-       #if("" != $columnEntity.comment) /**
+       #if("" != $columnEntity.comment)
+
+    /**
      * $columnEntity.comment
      */
     #end

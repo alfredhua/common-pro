@@ -2,7 +2,6 @@ package ${packageName}.mapper;
 import ${packageName}.entity.${entityName};
 import com.common.mybatis.BaseMapper;
 
-
 /**
  * @auth generator
  * @date ${date}
