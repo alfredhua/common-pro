@@ -1,6 +1,6 @@
 package com.demo.mybtatis;
 
-import com.common.demo.dao.DemoMapper;
+import com.common.demo.mapper.DemoMapper;
 import com.common.demo.rabbitmq.Demo;
 import com.common.mybatis.entity.EntityWrapper;
 import com.common.mybatis.enums.ConditionEnum;

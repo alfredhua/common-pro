@@ -1,4 +1,4 @@
-package com.common.demo.dao;
+package com.common.demo.mapper;
 
 import com.common.demo.rabbitmq.Demo;
 import com.common.mybatis.BaseMapper;

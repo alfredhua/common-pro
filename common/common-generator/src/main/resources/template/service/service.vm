@@ -1,10 +1,10 @@
-package ${packageName}.dao;
+package ${packageName}.service;
 
 
 /**
- * @auth guozhenhua
- * @date ${ctime}
+ * @auth generator
+ * @date ${date}
  */
-public interface ${entityName}Mapper extends BaseMapper<${entityName}> {
+public interface ${entityName}Service{
 
 }

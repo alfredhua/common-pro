@@ -1,4 +1,4 @@
-package com.common.generator.util;
+package com.common.generator.entity;
 
 import lombok.Getter;
 
